@@ -1,0 +1,16 @@
+{
+    "name": "skacekachna/wot-loader",
+    "description": "Loads world of tanks xml data into relational database.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan Zipek",
+            "email": "jan@zipek.cz"
+        }
+    ],
+	"autoload": {
+        "psr-4": {"Loader\\": "app/"}
+    },
+    "require": {}
+}

@@ -1,0 +1,27 @@
+<?php
+namespace Loader\Config;
+
+class Reader
+{
+    private $contents;
+
+	public function __construct($path = 'config.php') {
+		$this->load($path);
+	}
+	
+	public function load($path = 'config.php') {
+		if (!file_exists($path)) {
+			throw new \Exception("Config path '$path' doesn't exist.");
+		}
+		
+		$this->contents = new ReaderClass(require_once($path));		
+	}
+	
+	public function __get($name) {
+		return $this->contents->$name;
+	}
+	
+	public function __isset($name) {
+		return isset($this->contents->$name);
+	}
+}
