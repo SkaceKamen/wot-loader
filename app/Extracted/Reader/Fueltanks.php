@@ -6,7 +6,7 @@ class Fueltanks extends Item
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/components/fueltanks.xml',
-			'Storage\Fueltank',
+			'\Loader\Storage\Fueltank',
 			array(
 				'name' => 'userString',
 				'nation' => 'nation',

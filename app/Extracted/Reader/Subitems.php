@@ -1,11 +1,16 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Storage\Relator;
+use Loader\Storage\Tank\Parentus;
+
 class Subitems
 {
 	protected $map = array();
 	protected $preset = array();
-	protected $cls = 'Storage\Item';
+	protected $cls = '\Loader\Storage\Item';
+
+    /** @var \Loader\Extracted\Reader $reader */
 	protected $reader = null;
 	protected $includeNode = true;
 	protected $unlocksParent = null;
@@ -31,7 +36,7 @@ class Subitems
 		$items = array();
 		
 		if (!$element)
-			throw new Exception("Undefined element passed to subitems reader.");
+			throw new \Exception("Undefined element passed to subitems reader.");
 		
 		$items_list = $element->children();		
 		foreach($items_list as $node => $content) {
@@ -52,8 +57,8 @@ class Subitems
 
 				if (is_callable($value)) {
 					$data[$key] = call_user_func_array($value, array($content, $key));
-				} else if ($value instanceof SelfRelator) {
-					$data[$key] = new StorageRelator($value->getType(), array(
+				} else if ($value instanceof This) {
+					$data[$key] = new Relator($value->getType(), array(
 						'name_node' => $node,
 						'wot_version_id' => $value->getVersion()
 					));
@@ -97,8 +102,8 @@ class Subitems
 							$cost = (string)$unlock->cost;
 							$name_node = "$nation-$unlock";
 							
-							$items[] = new StorageTankParent(array(
-								'wot_tanks_id' => new StorageRelator('tank', array(
+							$items[] = new Parentus(array(
+								'wot_tanks_id' => new Relator('tank', array(
 									'name_node' => $name_node,
 									'wot_version_id' => $this->unlocksParent->get('wot_version_id')
 								)),

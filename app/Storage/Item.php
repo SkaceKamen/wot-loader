@@ -23,9 +23,7 @@ class Item
 		$this->keys = $keys;
 		$this->saved = $saved;
 		$this->update($values);
-		
-		//echo "Created $type " . (isset($values['name_node']) ? $values['name_node'] : "") . " storage item (saved $saved)\r\n";
-	}
+    }
 	
 	public function getType() {
 		return $this->type;
@@ -42,8 +40,8 @@ class Item
 	public function get($key) {
 		return isset($this->values[$key]) ? $this->values[$key] : null;
 	}
-	
-	public function update($item) {		
+
+    public function update($item) {
 		if (is_object($item) && $item->isSaved()) {
 			$this->saved = true;
 		}
@@ -57,8 +55,12 @@ class Item
 				$this->values[strtolower($key)] = $value;
 		}
 	}
-	
-	public function equals($item) {
+
+    /**
+     * @param Item $item
+     * @return bool
+     */
+	public function equals(Item $item) {
 		if ($item->getType() != $this->getType())
 			return false;
 		
@@ -71,7 +73,6 @@ class Item
 	}
 	
 	public function match($array) {
-
 		if (!is_array($array))
 			return false;
 	
@@ -82,7 +83,7 @@ class Item
 		
 		return true;
 	}
-	
+
 	private function compare($myself, $other) {
 		if (is_string($myself)) {
 			if (strcasecmp($myself, $other) != 0) {

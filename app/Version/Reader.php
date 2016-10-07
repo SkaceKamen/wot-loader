@@ -3,9 +3,13 @@ namespace Loader\Version;
 
 class Reader
 {
-	
+	/** @var \Loader\Path $wot */
 	private $wot;
-	
+
+    /**
+     * Reader constructor.
+     * @param \Loader\Path $wot
+     */
 	public function __construct($wot) {
 		$this->wot = $wot;
 	}

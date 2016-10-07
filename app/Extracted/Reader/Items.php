@@ -1,12 +1,16 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Storage\Item;
+
 class Items
 {
 	protected $idsSeparated = false;
 	protected $map = array();
-	protected $reader = null;
-	protected $cls = 'Storage\Item';
+
+    /** @var \Loader\Extracted\Reader $reader */
+    protected $reader = null;
+	protected $cls = '\Loader\Storage\Item';
 	protected $file;
 	
 	private $translated = array(
@@ -27,7 +31,14 @@ class Items
 	public function getTranslator() {
 		return $this->reader->getTranslator();
 	}
-	
+
+    /**
+     * @param $path
+     * @param $nation
+     * @param $version
+     * @return Item[]
+     * @throws \Exception
+     */
 	public function read($path, $nation, $version) {
 		$items = array();
 		$ids = array();

@@ -6,7 +6,7 @@ class Shells extends Item
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/components/shells.xml',
-			'Storage\Shell',
+			'\Loader\Storage\Shell',
 			array(
 				'name' => 'userString',
 				'price' => function($element, $key) {
@@ -26,7 +26,7 @@ class Shells extends Item
 						case 'HIGH_EXPLOSIVE': return 'he'; break;
 						case 'HOLLOW_CHARGE': return 'heat'; break;
 					}
-					throw new \Exception('Uknown shell type ' . (string)$element->kind);
+					throw new \Exception('Unknown shell type ' . (string)$element->kind);
 				},
 				'shell_caliber' => 'caliber',
 				'shell_damage_armor' => function($element, $key) { return (int)$element->damage->armor; },

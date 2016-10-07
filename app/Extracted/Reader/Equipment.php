@@ -1,6 +1,8 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Storage;
+
 class Equipment extends Item
 {
 	public function read($path, $nation, $version) {

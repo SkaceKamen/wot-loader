@@ -1,12 +1,12 @@
 <?php
 namespace Loader\Config;
 
-class ReaderClass
+class Category
 {
 	public function __construct($contents) {
 		foreach($contents as $key => $value) {
 			if (is_array($value)) {
-				$contents[$key] = new ReaderClass($value);
+				$contents[$key] = new Category($value);
 			}
 		}
 		

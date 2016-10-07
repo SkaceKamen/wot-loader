@@ -1,12 +1,16 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Storage\Tank;
+use Loader\Storage\Turret;
+use Loader\Storage\Relator;
+
 class Tanks extends Item
 {
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/list.xml',
-			'Storage\Tank',
+			'\Loader\Storage\Tank',
 			array(
 				'name' => 'userString',
 				'level' => 'level',
@@ -21,6 +25,8 @@ class Tanks extends Item
 						case 'AT-SPG': return 'td';
 						case 'SPG': return 'spg';
 					}
+
+					return null;
 				},
 				'secret' => function($element, $key) {
 					return in_array('secret', preg_split('/\s+/', (string)$element->tags)) ? 1 : 0;
@@ -86,9 +92,9 @@ class Tanks extends Item
 				}
 				
 				if ($item === null) {
-					echo "<b>Tank $node is not listed in list.xml!</b>\r\n";
+					trigger_error("Tank $node is not listed in list.xml!", E_USER_WARNING);
 					
-					$item = new Storage\Tank(array());
+					$item = new Tank(array());
 					$items[] = $item;
 				}
 				
@@ -110,7 +116,7 @@ class Tanks extends Item
 				));
 				
 				$turrets = new Subitems(
-					$this->reader, 'Storage\Turret',
+					$this->reader, '\Loader\Storage\Turret',
 					array(
 						'wot_version_id' => $version,
 						'wot_tanks_id' => $item->getRelator()
@@ -142,17 +148,17 @@ class Tanks extends Item
 				foreach($turrets as $turret) {
 					
 					// Unlocks can get into array
-					if ((!$turret instanceof Storage\Turret))
+					if ((!$turret instanceof Turret))
 						continue;
 						
 					$raw = $turret->getRaw();
 
 					$turret_guns = new Subitems(
-						$this->reader, 'Storage\Turret\Gun',
+						$this->reader, '\Loader\Storage\Turret\Gun',
 						array(
 							'wot_items_turrets_id' => $turret->getRelator()
 						), array(
-							'wot_items_guns_id' => new SelfRelator('gun', $version),
+							'wot_items_guns_id' => new This('gun', $version),
 							'gun_armor' => array($this, 'getArmorString'),
 							'gun_armor_gun' => function($element, $key) {
 								foreach($element->armor->children() as $n => $c) {
@@ -193,8 +199,8 @@ class Tanks extends Item
 					$items = array_merge($items, $turret_guns->read($raw->guns, $nation));
 				}
 					
-				$chassis = new SubitemsReader(
-					$this->reader, 'Storage\Chassis',
+				$chassis = new Subitems(
+					$this->reader, '\Loader\Storage\Chassis',
 					array(
 						'wot_version_id' => $version,
 						'wot_tanks_id' => $item->getRelator()
@@ -221,23 +227,23 @@ class Tanks extends Item
 					$item
 				);
 					
-				$engines = new SubitemsReader(
+				$engines = new Subitems(
 					$this->reader, 'Storage\Tank\Engine',
 					array(
 						'wot_tanks_id' => $item->getRelator()
 					), array(
-						'wot_items_engines_id' => new SelfRelator('engine', $version)
+						'wot_items_engines_id' => new This('engine', $version)
 					),
 					false,
 					$item
 				);
 				
-				$radios = new SubitemsReader(
+				$radios = new Subitems(
 					$this->reader, 'Storage\Tank\Radio',
 					array(
 						'wot_tanks_id' => $item->getRelator()
 					), array(
-						'wot_items_radios_id' => new SelfRelator('radio', $version)
+						'wot_items_radios_id' => new This('radio', $version)
 					),
 					false,
 					$item
@@ -251,7 +257,7 @@ class Tanks extends Item
 				foreach($subitems as $node => $content) {
 					$node = $nation . '-' . $node;
 					
-					$item->update(array('default_tank' => new Storage\Relator('fuel_tank', array(
+					$item->update(array('default_tank' => new Relator('fuel_tank', array(
 						'name_node' => $node,
 						'nation' => $nation,
 						'wot_version_id' => $version

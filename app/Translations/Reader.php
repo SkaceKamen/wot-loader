@@ -20,7 +20,7 @@ class Reader
 		}
 	}
 	
-	private function readMo($path) {
+	private function readMo($filename) {
 		/**
 		 * read header from file
 		 */
@@ -178,7 +178,7 @@ class Reader
 			if (isset($this->files[$file][$_key]))
 				return $this->files[$file][$_key];
 			else {
-				echo "Undefined $file $_key\r\n";
+				trigger_error("Undefined translation $file $_key\r\n", E_USER_WARNING);
 				return $key;
 			}
 		} else {

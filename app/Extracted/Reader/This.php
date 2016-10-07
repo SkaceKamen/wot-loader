@@ -1,5 +1,7 @@
 <?php
-class Self
+namespace Loader\Extracted\Reader;
+
+class This
 {
 	private $type;
 	private $version;

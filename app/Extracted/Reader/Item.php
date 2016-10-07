@@ -1,9 +1,13 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Extracted\Reader;
+
 class Item
 {
+    /** @var Items $itemsReader */
 	protected $itemsReader = null;
+    /** @var Reader $reader */
 	protected $reader = null;
 	
 	public function setReader($reader) {
@@ -14,7 +18,7 @@ class Item
 	}
 	
 	public function read($path, $nation, $version) {
-		throw new Exception("This should be implemented.");
+		throw new \Exception("This should be implemented.");
 	}
 	
 	public function translate($value) {
@@ -61,7 +65,7 @@ class Item
 			if (isset($armor[$node])) {
 				$armor_primary .= $armor[$node] . ' ';
 			} else {
-				echo "<b>Warning:</b> $tank doesn't have primary armor node.\r\n";
+				trigger_error("$tank doesn't have primary armor node.", E_USER_WARNING);
 				$armor_primary .= "? ";
 			}
 		}

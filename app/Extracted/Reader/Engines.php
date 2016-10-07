@@ -6,7 +6,7 @@ class Engines extends Item
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/components/engines.xml',
-			'Storage\Engine',
+			'\Loader\Storage\Engine',
 			array(
 				'name' => 'userString',
 				'level' => 'level',

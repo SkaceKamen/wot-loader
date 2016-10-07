@@ -1,10 +1,14 @@
 <?php
 namespace Loader\Extracted;
 
+use Loader\Storage;
+
 class Reader
 {
 	private $path;
 	private $versionId;
+
+    /** @var \Loader\Translations\Reader $translator */
 	private $translator;
 	
 	public function __construct($path, $version_id, $translator) {
@@ -23,9 +27,12 @@ class Reader
 		}
 		return $nations;
 	}
-	
+
+    /**
+     * @param string $nation
+     * @return Storage\Item[]
+     */
 	public function getItems($nation) {
-		
 		$items = array();
 		$items = array_merge($items, $this->getRadios($nation));
 		$items = array_merge($items, $this->getEngines($nation));
@@ -40,7 +47,10 @@ class Reader
 		return $items;
 		
 	}
-	
+
+    /**
+     * @return \Loader\Translations\Reader
+     */
 	public function getTranslator() {
 		return $this->translator;
 	}
@@ -84,7 +94,7 @@ class Reader
     /**
      * @param Reader\Item $reader
      * @param string $nation
-     * @return mixed
+     * @return Storage\Item[]
      */
 	private function getReader($reader, $nation) {
 		return $reader->setReader($this)->read($this->path, $nation, $this->versionId);

@@ -6,7 +6,7 @@ class Guns extends Item
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/components/guns.xml',
-			'Storage\Gun',
+			'\Loader\Storage\Gun',
 			array(
 				'name' => 'userString',
 				'level' => 'level',
@@ -46,7 +46,7 @@ class Guns extends Item
 				array(
 					'wot_items_guns_id' => $gun->getRelator()
 				), array(
-					'wot_items_shells_id' => new Self('shell', $version),
+					'wot_items_shells_id' => new This('shell', $version),
 					'shell_default_portion' => 'defaultPortion',
 					'shell_speed' => 'speed',
 					'shell_max_distance' => 'maxDistance',

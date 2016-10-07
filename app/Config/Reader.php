@@ -14,7 +14,7 @@ class Reader
 			throw new \Exception("Config path '$path' doesn't exist.");
 		}
 		
-		$this->contents = new ReaderClass(require_once($path));		
+		$this->contents = new Category(require_once($path));
 	}
 	
 	public function __get($name) {

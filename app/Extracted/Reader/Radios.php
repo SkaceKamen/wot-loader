@@ -6,7 +6,7 @@ class Radios extends Item
 	public function __construct() {
 		$this->itemsReader = new Items(
 			'/components/radios.xml',
-			'Storage\Radio',
+			'\Loader\Storage\Radio',
 			array(
 				'name' => 'userString',
 				'level' => 'level',

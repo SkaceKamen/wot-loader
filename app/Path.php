@@ -1,6 +1,8 @@
 <?php
 namespace Loader;
 
+use \Loader\Xml\Decompressor;
+
 class Path
 {
 	private $path;
@@ -32,7 +34,7 @@ class Path
 		if (!file_exists($target_path))
 			mkdir($target_path);
 		
-		WotXML::init();
+		Decompressor::init();
 		
 		$this->extractItemsPath($this->getPath() . self::PATH_VEHICLES, $target_path);
 	}
@@ -61,7 +63,7 @@ class Path
 				$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 				$name = pathinfo($file, PATHINFO_BASENAME);
 				if ($ext == 'xml') {
-					WotXML::decodePackedFile($file, $name, $path_target . $name);
+                    Decompressor::decodePackedFile($file, $name, $path_target . $name);
 				}
 			}
 		}
