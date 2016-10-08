@@ -1,6 +1,7 @@
 <?php
 namespace Loader;
 
+use Loader\Logger\Text;
 use Psr\Log;
 
 class Reader implements Log\LoggerAwareInterface
@@ -23,13 +24,21 @@ class Reader implements Log\LoggerAwareInterface
 	/** @var Path $path */
 	private $path;
 
+	/** @var ErrorHandler $errorHandler */
+	private $errorHandler;
+
 	/**
 	 * Reader constructor.
 	 * @param Config\Reader $config
 	 */
 	public function __construct($config) {
 		$this->config = $config;
-		
+
+		$this->errorHandler = new ErrorHandler();
+		$this->errorHandler->hook();
+
+		$this->setLogger(new Text());
+
 		$this->db = new Mysqler(
 			$config->mysql->hostname,
 			$config->mysql->username,
@@ -38,6 +47,11 @@ class Reader implements Log\LoggerAwareInterface
 		);
 		
 		$this->path = new Path($config->paths->game);
+	}
+
+	private function log($text, $level=Log\LogLevel::INFO) {
+		if ($this->logger)
+			$this->logger->log($level, $text);
 	}
 	
 	public function run($params) {
@@ -50,20 +64,22 @@ class Reader implements Log\LoggerAwareInterface
 			$this->translations
 		);
 		
-		echo "Preloading...\r\n";
+		$this->log("Loading current storage state...");
 		
 		$storage = new Storage\Mysql($this->db);
 		$storage->preload($this->version['id']);
 		
-		echo "Done preloading.\r\n";
-		
+		$this->log("Current storage loaded.");
+
+		$this->log("Reading game data.");
+
 		$items = $reader->getEquipment();
 		foreach($items as $item) {
 			$storage->setItem($item);
 		}
 		
 		foreach($reader->getNations() as $nation) {
-			echo "Loading $nation...\r\n";
+			$this->log("Loading $nation");
 			
 			$items = $reader->getItems($nation);
 			foreach($items as $item) {
@@ -71,12 +87,13 @@ class Reader implements Log\LoggerAwareInterface
 			}
 		}
 		
-		echo "Done loading.\r\n";
-		echo "Saving to DB...\r\n";
+		$this->log("Done reading game data.");
+
+		$this->log("Saving updated storage");
 		
 		$storage->save();
 		
-		echo "Done saving.\r\n";
+		$this->log("Done saving.");
 	}
 	
 	private function getItemsPath() {
@@ -137,5 +154,6 @@ class Reader implements Log\LoggerAwareInterface
 	 */
 	public function setLogger(Log\LoggerInterface $logger) {
 		$this->logger = $logger;
+		$this->errorHandler->setLogger($logger);
 	}
 }
