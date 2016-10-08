@@ -2,6 +2,7 @@
 namespace Loader\Extracted\Reader;
 
 use Loader\Extracted\Reader;
+use Loader\Path;
 
 class Item
 {
@@ -9,14 +10,24 @@ class Item
 	protected $itemsReader = null;
     /** @var Reader $reader */
 	protected $reader = null;
-	
+
+	/**
+	 * @param Reader $reader
+	 * @return $this
+	 */
 	public function setReader($reader) {
 		$this->reader = $reader;
 		if ($this->itemsReader)
 			$this->itemsReader->setReader($this->reader);
 		return $this;
 	}
-	
+
+	/**
+	 * @param Path $path
+	 * @param string $nation
+	 * @param int $version
+	 * @throws \Exception
+	 */
 	public function read($path, $nation, $version) {
 		throw new \Exception("This should be implemented.");
 	}

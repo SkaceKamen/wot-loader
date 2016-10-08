@@ -1,11 +1,15 @@
 <?php
 namespace Loader\Extracted;
 
+use Loader\Path;
 use Loader\Storage;
 
 class Reader
 {
+	/** @var Path $path */
 	private $path;
+
+	/** @var int $versionId */
 	private $versionId;
 
     /** @var \Loader\Translations\Reader $translator */

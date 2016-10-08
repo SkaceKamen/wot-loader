@@ -1,4 +1,4 @@
-versions/*
-texts/*
+data/versions/*
+data/texts/*
 vendor/*
 .idea/*

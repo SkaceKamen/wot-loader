@@ -1,8 +1,14 @@
 <?php
 namespace Loader\Config;
 
+
+/**
+ * @property \Loader\Config\Category mysql
+ * @property \Loader\Config\Category paths
+ */
 class Reader
 {
+	/** @var \Loader\Config\Category $contents */
     private $contents;
 
 	public function __construct($path = 'config.php') {

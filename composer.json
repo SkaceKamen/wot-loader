@@ -12,5 +12,7 @@
 	"autoload": {
         "psr-4": {"Loader\\": "app/"}
     },
-    "require": {}
+    "require": {
+        "psr/log": "1.0.1"
+    }
 }

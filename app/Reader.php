@@ -1,22 +1,36 @@
 <?php
 namespace Loader;
 
-class Reader
+use Psr\Log;
+
+class Reader implements Log\LoggerAwareInterface
 {
-    /**
-     * @var Version\Reader $version
-     */
+    /** @var Version\Reader $version */
 	private $version;
 
-    /**
-     * @var Translations\Reader $translations
-     */
+    /** @var Translations\Reader $translations */
     private $translations;
-	
+
+	/** @var Config\Reader $config */
+	private $config;
+
+	/** @var Log\LoggerInterface $logger */
+	private $logger;
+
+	/** @var Mysqler $db */
+	private $db;
+
+	/** @var Path $path */
+	private $path;
+
+	/**
+	 * Reader constructor.
+	 * @param Config\Reader $config
+	 */
 	public function __construct($config) {
 		$this->config = $config;
 		
-		$this->db = new mysqler(
+		$this->db = new Mysqler(
 			$config->mysql->hostname,
 			$config->mysql->username,
 			$config->mysql->password,
@@ -112,5 +126,16 @@ class Reader
 	
 	public function _($key) {
 		return $this->translations->get($key);
+	}
+
+	/**
+	 * Sets a logger instance on the object.
+	 *
+	 * @param Log\LoggerInterface $logger
+	 *
+	 * @return null
+	 */
+	public function setLogger(Log\LoggerInterface $logger) {
+		$this->logger = $logger;
 	}
 }

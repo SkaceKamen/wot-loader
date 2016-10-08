@@ -2,8 +2,8 @@
 return array(
 	'paths' => array(
 		'game' => 'd:/Hry/World_of_Tanks_closed_Beta/',	//d:/Hry/World_of_Tanks_closed_Beta/
-		'versions' => 'versions/',
-		'texts' => 'texts/'
+		'versions' => 'data/versions/',
+		'texts' => 'data/texts/'
 	),
 	'mysql' => array(
 		'hostname' => '127.0.0.1',

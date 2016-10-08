@@ -1,6 +1,7 @@
 <?php
 namespace Loader\Extracted\Reader;
 
+use Loader\Path;
 use Loader\Storage\Item;
 
 class Items
@@ -32,17 +33,17 @@ class Items
 		return $this->reader->getTranslator();
 	}
 
-    /**
-     * @param $path
-     * @param $nation
-     * @param $version
-     * @return Item[]
-     * @throws \Exception
-     */
+	/**
+	 * @param Path $path
+	 * @param string $nation
+	 * @param int $version
+	 * @return Item[]
+	 * @throws \Exception
+	 */
 	public function read($path, $nation, $version) {
 		$items = array();
 		$ids = array();
-		$items_list = array();
+		$items_list = null;
 		
 		$path = $path . '/' . $nation . '/' . $this->file;
 		$list = simplexml_load_file($path);
