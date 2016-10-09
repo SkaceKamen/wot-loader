@@ -1,7 +1,7 @@
 <?php
 namespace Loader;
 
-class Mysqler {
+class Database {
 	public $connected;
 	public $allowUpdate = true;
 

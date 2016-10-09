@@ -3,15 +3,15 @@ namespace Loader\Storage;
 
 use Loader\Map;
 use Loader\Storage;
-use Loader\Mysqler;
+use Loader\Database;
 use Psr\Log\LogLevel;
 
 class Mysql extends Storage
 {
-    ///@var Loader\Mysqler $db
+    /** @var Database $db */
 	protected $db;
 
-	public function __construct(Mysqler $db) {
+	public function __construct(Database $db) {
 		$this->db = $db;
 		$this->db->autocommit(false);
 	}
@@ -23,13 +23,13 @@ class Mysql extends Storage
 		$guns = new Map();
 		$shells = new Map();
 		$radios = new Map();
-		$fueltanks = new Map();
+		$fuelTanks = new Map();
 		$tanks = new Map();
 		$equipment = new Map();
 
 		$query = $this->db->query("SELECT * FROM wot_items_tanks WHERE wot_version_id = $version_id");
 		while(($row = $query->fetch_array())) {
-			$item = $fueltanks->set($row['wot_items_tanks_id'], new Fueltank($row, true));
+			$item = $fuelTanks->set($row['wot_items_tanks_id'], new Fueltank($row, true));
 			$this->setItem($item);
 		}
 
@@ -38,7 +38,7 @@ class Mysql extends Storage
 			$item = $tanks->set($row['wot_tanks_id'], new Tank($row, true));
 
 			$item->update(array(
-				'default_tank' => $fueltanks->get($row['default_tank'], new None())->getRelator()
+				'default_tank' => $fuelTanks->get($row['default_tank'], new None())->getRelator()
 			));
 			$this->setItem($item);
 		}
@@ -222,6 +222,7 @@ class Mysql extends Storage
 
 				$this->logger->log(LogLevel::INFO, "Saving $type.");
 
+				/** @var Item $item */
 				foreach($this->types[$type] as $item) {
 
 					$values = array();
@@ -231,9 +232,10 @@ class Mysql extends Storage
 
 							$related = null;
 
-							foreach($this->types[$value->getType()] as $subitem) {
-								if ($subitem->match($value->getValues())) {
-									$related = $subitem;
+							/** @var Item $subItem */
+							foreach($this->types[$value->getType()] as $subItem) {
+								if ($subItem->match($value->getValues())) {
+									$related = $subItem;
 									break;
 								}
 							}

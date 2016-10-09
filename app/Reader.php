@@ -18,7 +18,7 @@ class Reader implements Log\LoggerAwareInterface
 	/** @var Log\LoggerInterface $logger */
 	private $logger;
 
-	/** @var Mysqler $db */
+	/** @var Database $db */
 	private $db;
 
 	/** @var Path $path */
@@ -39,7 +39,7 @@ class Reader implements Log\LoggerAwareInterface
 
 		$this->setLogger(new Text());
 
-		$this->db = new Mysqler(
+		$this->db = new Database(
 			$config->mysql->hostname,
 			$config->mysql->username,
 			$config->mysql->password,
