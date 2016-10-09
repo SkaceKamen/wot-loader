@@ -4,6 +4,7 @@ namespace Loader\Storage;
 use Loader\Map;
 use Loader\Storage;
 use Loader\Mysqler;
+use Psr\Log\LogLevel;
 
 class Mysql extends Storage
 {
@@ -45,18 +46,26 @@ class Mysql extends Storage
 		$query = $this->db->query("SELECT * FROM wot_items_chassis WHERE wot_version_id = $version_id");
 		while(($row = $query->fetch_array())) {
 			$item = $chassis->set($row['wot_items_chassis_id'], new Chassis($row, true));
-			$item->update(array(
-				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'], new None())->getRelator()
-			));
+
+			if ($row['wot_tanks_id']) {
+				$item->update(array(
+					'wot_tanks_id' => $tanks->get($row['wot_tanks_id'], new None())->getRelator()
+				));
+			}
+
 			$this->setItem($item);
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_turrets WHERE wot_version_id = $version_id");
 		while(($row = $query->fetch_array())) {
 			$item = $turrets->set($row['wot_items_turrets_id'], new Turret($row, true));
-			$item->update(array(
-				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'], new None())->getRelator()
-			));
+
+			if ($row['wot_tanks_id']) {
+				$item->update(array(
+					'wot_tanks_id' => $tanks->get($row['wot_tanks_id'], new None())->getRelator()
+				));
+			}
+
 			$this->setItem($item);
 		}
 
@@ -211,7 +220,7 @@ class Mysql extends Storage
 		try {
 			foreach($map as $type => $info) {
 
-				echo "Saving $type.\r\n";
+				$this->logger->log(LogLevel::INFO, "Saving $type.");
 
 				foreach($this->types[$type] as $item) {
 
@@ -230,7 +239,6 @@ class Mysql extends Storage
 							}
 
 							if (!$related) {
-								print_r($value);
 								throw new \Exception("Failed to resolve relation.");
 							}
 

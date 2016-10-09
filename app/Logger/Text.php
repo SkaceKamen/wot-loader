@@ -10,7 +10,7 @@ use Psr\Log\AbstractLogger;
 class Text extends AbstractLogger
 {
 	public function log($level, $message, array $context = array()) {
-		echo ucfirst($level) . ': ' . $this->interpolate($message, $context);
+		echo ucfirst($level) . ': ' . $this->interpolate($message, $context) . PHP_EOL;
 	}
 
 	private function interpolate($message, array $context = array()) {

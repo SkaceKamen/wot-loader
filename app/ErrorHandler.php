@@ -52,13 +52,20 @@ class ErrorHandler implements LoggerAwareInterface
 		}
 
 		$this->logger->log($level, "$msg ($file:$line)");
-		foreach(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
-			$signature = @$trace['function'];
-			if (isset($trace['class'])) {
-				$signature = "{$trace['class']}::$signature";
-			}
 
-			$this->logger->log($level, "\t$signature() {$trace['file']}:{$trace['line']}");
+		if ($number === E_ERROR || $number == E_USER_ERROR) {
+			foreach (debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS) as $trace) {
+				$signature = @$trace['function'];
+				if (isset($trace['class'])) {
+					$signature = "{$trace['class']}::$signature";
+				}
+
+				$path = "-:-";
+				if (isset($trace['file']))
+					$path = "{$trace['file']}:{$trace['line']}";
+
+				$this->logger->log($level, "\t$signature() $path");
+			}
 		}
 	}
 }

@@ -67,6 +67,7 @@ class Reader implements Log\LoggerAwareInterface
 		$this->log("Loading current storage state...");
 		
 		$storage = new Storage\Mysql($this->db);
+		$storage->setLogger($this->logger);
 		$storage->preload($this->version['id']);
 		
 		$this->log("Current storage loaded.");

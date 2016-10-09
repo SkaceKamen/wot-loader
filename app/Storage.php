@@ -1,11 +1,16 @@
 <?php
 namespace Loader;
 
-class Storage
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+
+class Storage implements LoggerAwareInterface
 {
+	use LoggerAwareTrait;
+
     /** @var Storage\Item[][] */
 	protected $types = array();
-	
+
 	public function setItem($item) {
 		$existing = $this->findItem($item);
 		if (!$existing) {
@@ -21,13 +26,14 @@ class Storage
      */
 	public function findItem($item) {
 		$type = $item->getType();
+		$hash = $item->getHash();
 		
-		if (!isset($this->types[$type]))
+		if (!isset($this->types[$type])) {
 			return null;
+		}
 		
-		foreach($this->types[$type] as $existing) {
-			if ($existing->equals($item))
-				return $existing;
+		if (isset($this->types[$type][$hash])) {
+			return $this->types[$type][$hash];
 		}
 		
 		return null;
@@ -42,7 +48,7 @@ class Storage
 		if (!isset($this->types[$type]))
 			$this->types[$type] = array();
 		
-		$this->types[$type][] = $item;
+		$this->types[$type][$item->getHash()] = $item;
 	}
 	
 	public function save() {

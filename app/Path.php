@@ -15,7 +15,7 @@ class Path
 	}
 	
 	public function getVersion() {
-		return (new VersionReader($this))->get();
+		return (new Version\Reader($this))->get();
 	}
 
 	public function exists() {

@@ -3,19 +3,19 @@ namespace Loader\Storage;
 
 class Item
 {
-	///@var string $type type id
+	/** @var string $type type id */
 	protected $type = '';
-	
-	///@var array $keys list of keys making this item unique
+
+	/** @var array $keys list of keys making this item unique */
 	protected $keys = array();
-	
-	///@var array $values item values
+
+	/** @var array $values item values */
 	protected $values = array();
 	
-	///@var simplexmlelement $raw raw item data
+	/** @var \SimpleXMLElement $raw raw item data */
 	protected $raw = null;
-	
-	///@var boolean $saved saved in database
+
+	/** @var boolean $saved saved in database */
 	protected $saved = false;
 
 	public function __construct($type, $keys, $values, $saved=false) {
@@ -118,5 +118,20 @@ class Item
 			$values[$key] = $this->get($key);
 		}
 		return new Relator($this->getType(), $values);
+	}
+	
+	public function getHash() {
+		$hash = array();
+		foreach($this->keys as $key) {
+			if ($key != 'wot_version_id') {
+				$value = $this->get($key);
+				if ($value instanceof Relator) {
+					$hash[] = $value->getHash();
+				} else {
+					$hash[] = $value;
+				}
+			}
+		}
+		return implode('-', $hash);
 	}
 }

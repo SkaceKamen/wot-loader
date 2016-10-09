@@ -31,7 +31,7 @@ class Mysqler {
 		if ($db_charset == NULL)
 			$db_charset = "utf8";
 		
-		$this->mysqli = new mysqli($db_host, $db_user, $db_pass, $db_name);
+		$this->mysqli = new \mysqli($db_host, $db_user, $db_pass, $db_name);
 		
 		if ($this->mysqli->connect_error) {
 			throw new \Exception('Connect Error (' . $this->mysqli->connect_errno . ') ' . $this->mysqli->connect_error);

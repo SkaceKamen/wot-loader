@@ -51,4 +51,12 @@ class Relator
 		
 		return true;
 	}
+	
+	public function getHash() {
+		$hash = array();
+		foreach($this->getValues() as $key => $value) {
+			$hash[] = $value;
+		}
+		return implode('-', $hash);
+	}
 }

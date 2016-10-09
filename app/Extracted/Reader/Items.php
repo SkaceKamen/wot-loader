@@ -2,7 +2,7 @@
 namespace Loader\Extracted\Reader;
 
 use Loader\Path;
-use Loader\Storage\Item;
+use Loader\Storage;
 
 class Items
 {
@@ -37,7 +37,7 @@ class Items
 	 * @param Path $path
 	 * @param string $nation
 	 * @param int $version
-	 * @return Item[]
+	 * @return Storage\Item[]
 	 * @throws \Exception
 	 */
 	public function read($path, $nation, $version) {

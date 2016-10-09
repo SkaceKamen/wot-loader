@@ -42,7 +42,7 @@ class Guns extends Item
 			$element = $gun->getRaw();
 			
 			$shells = new Subitems(
-				$this->reader, 'StorageGunShell',
+				$this->reader, '\Loader\Storage\Gun\Shell',
 				array(
 					'wot_items_guns_id' => $gun->getRelator()
 				), array(

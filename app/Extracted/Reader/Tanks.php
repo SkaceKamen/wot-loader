@@ -228,7 +228,7 @@ class Tanks extends Item
 				);
 					
 				$engines = new Subitems(
-					$this->reader, 'Storage\Tank\Engine',
+					$this->reader, '\Loader\Storage\Tank\Engine',
 					array(
 						'wot_tanks_id' => $item->getRelator()
 					), array(
@@ -239,7 +239,7 @@ class Tanks extends Item
 				);
 				
 				$radios = new Subitems(
-					$this->reader, 'Storage\Tank\Radio',
+					$this->reader, '\Loader\Storage\Tank\Radio',
 					array(
 						'wot_tanks_id' => $item->getRelator()
 					), array(
