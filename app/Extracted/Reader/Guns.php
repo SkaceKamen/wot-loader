@@ -33,31 +33,31 @@ class Guns extends Item
 			)
 		);
 	}
-	
+
 	public function read($path, $nation, $version) {
 		$guns = $this->itemsReader->read($path, $nation, $version);
 		$items = $guns;
-		
-		foreach($guns as $gun) {
+
+		foreach ($guns as $gun) {
 			$element = $gun->getRaw();
-			
+
 			$shells = new Subitems(
 				$this->reader, '\Loader\Storage\Gun\Shell',
 				array(
 					'wot_items_guns_id' => $gun->getRelator()
 				), array(
-					'wot_items_shells_id' => new This('shell', $version),
-					'shell_default_portion' => 'defaultPortion',
-					'shell_speed' => 'speed',
-					'shell_max_distance' => 'maxDistance',
-					'shell_piercing_power' => 'piercingPower'
-				),
+				'wot_items_shells_id' => new This('shell', $version),
+				'shell_default_portion' => 'defaultPortion',
+				'shell_speed' => 'speed',
+				'shell_max_distance' => 'maxDistance',
+				'shell_piercing_power' => 'piercingPower'
+			),
 				false
 			);
-			
+
 			$items = array_merge($items, $shells->read($element->shots, $nation));
 		}
-		
+
 		return $items;
 	}
 }

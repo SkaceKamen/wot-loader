@@ -44,11 +44,15 @@ class ErrorHandler implements LoggerAwareInterface
 	public function handleError($number, $msg, $file, $line, $vars) {
 		$level = LogLevel::ERROR;
 
-		switch($number) {
+		switch ($number) {
 			case E_WARNING:
-			case E_USER_WARNING: $level = LogLevel::WARNING; break;
+			case E_USER_WARNING:
+				$level = LogLevel::WARNING;
+				break;
 			case E_NOTICE:
-			case E_USER_NOTICE: $level = LogLevel::NOTICE; break;
+			case E_USER_NOTICE:
+				$level = LogLevel::NOTICE;
+				break;
 		}
 
 		$this->logger->log($level, "$msg ($file:$line)");

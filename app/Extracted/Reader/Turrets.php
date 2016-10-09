@@ -10,7 +10,7 @@ class Turrets extends Item
 			array()
 		);
 	}
-	
+
 	public function read($path, $nation, $version) {
 		return $this->itemsReader->read($path, $nation, $version);
 	}

@@ -4,22 +4,22 @@ namespace Loader\Translations;
 class Reader
 {
 	private $files = array();
-	
+
 	public function __construct($path) {
 		$this->readPath($path);
 	}
-	
+
 	private function readPath($path) {
 		$dir = opendir($path);
-		while($file = readdir($dir)) {
-			if ($file!='.' && $file!='..') {
-				$ex = explode('.',$file);
+		while ($file = readdir($dir)) {
+			if ($file != '.' && $file != '..') {
+				$ex = explode('.', $file);
 				$ex = $ex[0];
-				$this->files[$ex] = $this->readMo($path . "//" . $file);  
+				$this->files[$ex] = $this->readMo($path . "//" . $file);
 			}
 		}
 	}
-	
+
 	private function readMo($filename) {
 		/**
 		 * read header from file
@@ -44,11 +44,11 @@ class Reader
 
 		if ($endian['endian'] == intval(hexdec('950412de'))) $endian = 'N';
 		else
-		if ($endian['endian'] == intval(hexdec('de120495'))) $endian = 'V';
-		else {
-			echo "Wrong endian";
-			return false;
-		}
+			if ($endian['endian'] == intval(hexdec('de120495'))) $endian = 'V';
+			else {
+				echo "Wrong endian";
+				return false;
+			}
 
 		// parse header
 
@@ -103,7 +103,7 @@ class Reader
 
 		$strings = '';
 
-		while (!feof($file)) $strings.= fread($file, 4096);
+		while (!feof($file)) $strings .= fread($file, 4096);
 		fclose($file);
 
 		// collect hash records
@@ -120,8 +120,8 @@ class Reader
 
 			// adjust offset due to reading strings to separate space before
 
-			$o['pos']-= $HposStrings;
-			$t['pos']-= $HposStrings;
+			$o['pos'] -= $HposStrings;
+			$t['pos'] -= $HposStrings;
 
 			// extract original and translations
 
@@ -132,12 +132,11 @@ class Reader
 				// got header --> store separately
 
 				$header = array();
-				foreach(explode("\n", $translation) as $line) {
+				foreach (explode("\n", $translation) as $line) {
 					$sep = strpos($line, ':');
-					if ($sep !== false) $header[trim(substr($line, 0, $sep)) ] = trim(substr($line, $sep + 1));
+					if ($sep !== false) $header[trim(substr($line, 0, $sep))] = trim(substr($line, $sep + 1));
 				}
-			}
-			else {
+			} else {
 
 				// detect context in original
 
@@ -145,8 +144,7 @@ class Reader
 				if ($sep !== false) {
 					$context = substr($original, 0, $sep);
 					$original = substr($original, $sep + 1);
-				}
-				else $context = null;
+				} else $context = null;
 				$original = explode("\00", $original);
 				$translation = explode("\00", $translation);
 				$singularFrom = array_shift($original);
@@ -167,13 +165,13 @@ class Reader
 
 		return $list;
 	}
-	
-	public function get($key) {
-		if (substr($key,0,1) == '#') {
-			$key = substr($key,1,strlen($key));
 
-			$file = substr($key,0,strpos($key,':'));
-			$_key = substr($key,strpos($key,':')+1,strlen($key));
+	public function get($key) {
+		if (substr($key, 0, 1) == '#') {
+			$key = substr($key, 1, strlen($key));
+
+			$file = substr($key, 0, strpos($key, ':'));
+			$_key = substr($key, strpos($key, ':') + 1, strlen($key));
 
 			if (isset($this->files[$file][$_key]))
 				return $this->files[$file][$_key];
@@ -185,22 +183,22 @@ class Reader
 			return $key;
 		}
 	}
-	
+
 	public function __get($key) {
 		return $this->get($key);
 	}
-	
-	public function __isset($key) {
-		if (substr($key,0,1) == '#') {
-			$key = substr($key,1,strlen($key));
 
-			$file = substr($key,0,strpos($key,':'));
-			$_key = substr($key,strpos($key,':')+1,strlen($key));
+	public function __isset($key) {
+		if (substr($key, 0, 1) == '#') {
+			$key = substr($key, 1, strlen($key));
+
+			$file = substr($key, 0, strpos($key, ':'));
+			$_key = substr($key, strpos($key, ':') + 1, strlen($key));
 
 			if (isset($translation[$file][$_key]))
 				return true;
 		}
 		return false;
 	}
-	
+
 }

@@ -8,7 +8,7 @@ use Psr\Log\LogLevel;
 
 class Mysql extends Storage
 {
-    /** @var Database $db */
+	/** @var Database $db */
 	protected $db;
 
 	public function __construct(Database $db) {
@@ -28,13 +28,13 @@ class Mysql extends Storage
 		$equipment = new Map();
 
 		$query = $this->db->query("SELECT * FROM wot_items_tanks WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $fuelTanks->set($row['wot_items_tanks_id'], new Fueltank($row, true));
 			$this->setItem($item);
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_tanks WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $tanks->set($row['wot_tanks_id'], new Tank($row, true));
 
 			$item->update(array(
@@ -44,7 +44,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_chassis WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $chassis->set($row['wot_items_chassis_id'], new Chassis($row, true));
 
 			if ($row['wot_tanks_id']) {
@@ -57,7 +57,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_turrets WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $turrets->set($row['wot_items_turrets_id'], new Turret($row, true));
 
 			if ($row['wot_tanks_id']) {
@@ -70,7 +70,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_guns WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $guns->set($row['wot_items_guns_id'], new Gun($row, true));
 			$this->setItem($item);
 		}
@@ -82,7 +82,7 @@ class Mysql extends Storage
 			WHERE wot_version_id = $version_id
 		");
 
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Turret\Gun($row, true);
 			$item->update(array(
 				'wot_items_guns_id' => $guns->get($row['wot_items_guns_id'])->getRelator(),
@@ -92,7 +92,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_shells WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $shells->set($row['wot_items_shells_id'], new Shell($row, true));
 			$this->setItem($item);
 		}
@@ -104,7 +104,7 @@ class Mysql extends Storage
 			WHERE wot_version_id = $version_id
 		");
 
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Gun\Shell($row, true);
 			$item->update(array(
 				'wot_items_guns_id' => $guns->get($row['wot_items_guns_id'])->getRelator(),
@@ -114,7 +114,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_engines WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $engines->set($row['wot_items_engines_id'], new Engine($row, true));
 			$this->setItem($item);
 		}
@@ -125,7 +125,7 @@ class Mysql extends Storage
 			JOIN wot_items_engines ON wot_items_engines.wot_items_engines_id = wot_items_engines_tanks.wot_items_engines_id
 			WHERE wot_version_id = $version_id
 		");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Tank\Engine($row, true);
 			$item->update(array(
 				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'])->getRelator(),
@@ -135,7 +135,7 @@ class Mysql extends Storage
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_items_radios WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $radios->set($row['wot_items_radios_id'], new Radio($row, true));
 			$this->setItem($item);
 		}
@@ -146,7 +146,7 @@ class Mysql extends Storage
 			JOIN wot_items_radios ON wot_items_radios_tanks.wot_items_radios_id = wot_items_radios.wot_items_radios_id
 			WHERE wot_version_id = $version_id
 		");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Tank\Radio($row, true);
 			$item->update(array(
 				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'])->getRelator(),
@@ -161,17 +161,17 @@ class Mysql extends Storage
 			JOIN wot_tanks ON wot_tanks_parents.wot_tanks_id = wot_tanks.wot_tanks_id
 			WHERE wot_version_id = $version_id
 		");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Tank\Parentus($row, true);
 			$item->update(array(
 				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'])->getRelator(),
-				'parent_id' =>  $tanks->get($row['parent_id'])->getRelator(),
+				'parent_id' => $tanks->get($row['parent_id'])->getRelator(),
 			));
 			$this->setItem($item);
 		}
 
 		$query = $this->db->query("SELECT * FROM wot_equipment WHERE wot_version_id = $version_id");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = $equipment->set($row['wot_equipment_id'], new Equipment($row, true));
 			$this->setItem($item);
 		}
@@ -182,7 +182,7 @@ class Mysql extends Storage
 			JOIN wot_equipment ON wot_equipment_params.wot_equipment_id = wot_equipment.wot_equipment_id
 			WHERE wot_version_id = $version_id
 		");
-		while(($row = $query->fetch_array())) {
+		while (($row = $query->fetch_array())) {
 			$item = new Equipment\Param($row, true);
 			$item->update(array(
 				'wot_equipment_id' => $equipment->get($row['wot_equipment_id'])->getRelator()
@@ -218,22 +218,22 @@ class Mysql extends Storage
 		);
 
 		try {
-			foreach($map as $type => $info) {
+			foreach ($map as $type => $info) {
 
 				$this->logger->log(LogLevel::INFO, "Saving $type.");
 
 				/** @var Item $item */
-				foreach($this->types[$type] as $item) {
+				foreach ($this->types[$type] as $item) {
 
 					$values = array();
 
-					foreach($item->getValues() as $key => $value) {
+					foreach ($item->getValues() as $key => $value) {
 						if ($value instanceof Relator) {
 
 							$related = null;
 
 							/** @var Item $subItem */
-							foreach($this->types[$value->getType()] as $subItem) {
+							foreach ($this->types[$value->getType()] as $subItem) {
 								if ($subItem->match($value->getValues())) {
 									$related = $subItem;
 									break;
@@ -259,11 +259,11 @@ class Mysql extends Storage
 						}
 					}
 
-					foreach($values as $key => $value) {
+					foreach ($values as $key => $value) {
 						if (is_array($value)) {
 							$details = "Wrong value for key $key (in type $type)\r\n";
 
-							foreach($value as $k => $v) {
+							foreach ($value as $k => $v) {
 								if (is_object($v)) {
 									$details .= "$k: " . get_class($v) . "\r\n";
 								} else {
@@ -273,7 +273,7 @@ class Mysql extends Storage
 
 							$details .= "\r\n";
 
-                            trigger_error($details, E_USER_WARNING);
+							trigger_error($details, E_USER_WARNING);
 						}
 					}
 
@@ -286,7 +286,7 @@ class Mysql extends Storage
 
 						$conditions = array();
 						$conditions_params = array();
-						foreach($item->getKeys() as $key) {
+						foreach ($item->getKeys() as $key) {
 							$conditions[] = "$key = ?";
 							$conditions_params[] = $values[$key];
 							unset($values[$key]);
@@ -303,7 +303,7 @@ class Mysql extends Storage
 
 			$this->db->commit();
 
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			$this->db->rollback();
 			throw $e;
 		}
