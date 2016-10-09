@@ -8,7 +8,7 @@ class Storage implements LoggerAwareInterface
 {
 	use LoggerAwareTrait;
 
-    /** @var Storage\Item[][] */
+    /** @var Storage\Item[][] $types */
 	protected $types = array();
 
 	public function setItem($item) {
