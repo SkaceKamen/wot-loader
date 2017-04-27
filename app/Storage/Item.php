@@ -41,6 +41,9 @@ class Item
 		return isset($this->values[$key]) ? $this->values[$key] : null;
 	}
 
+	/**
+	 * @param Item $item
+	 */
 	public function update($item) {
 		if (is_object($item) && $item->isSaved()) {
 			$this->saved = true;
@@ -132,6 +135,6 @@ class Item
 				}
 			}
 		}
-		return implode('-', $hash);
+		return strtolower(implode('-', $hash));
 	}
 }

@@ -8,13 +8,21 @@ class ByteReader
 	private $handle;
 	private $file;
 	private $size;
+	private $position = null;
 
-	public function __construct($file) {
+	public function __construct($file, $size = null) {
 		static::$instance = $this;
 
-		$this->file = $file;
-		$this->size = filesize($file);
-		$this->handle = fopen($file, 'rb');
+		if (is_string($file)) {
+			$this->file = $file;
+			$this->size = filesize($file);
+			$this->handle = fopen($file, 'rb');
+		} else if (is_resource($file)) {
+			$this->file = $file;
+			$this->size = $size;
+			$this->handle = $file;
+			$this->position = 0;
+		}
 	}
 
 	public function readByte() {
@@ -47,8 +55,11 @@ class ByteReader
 	public function readChars($length) {
 		if ($length <= 0)
 			return "";
-		if ($this->position() + $length > $this->size)
+		if ($this->size !== null && $this->position() + $length > $this->size)
 			throw new \Exception("Position + length is out of file");
+
+		$this->position += $length;
+
 		return fread($this->handle, $length);
 	}
 
@@ -68,6 +79,12 @@ class ByteReader
 	}
 
 	public function position() {
-		return ftell($this->handle);
+		if ($this->position === null)
+			return ftell($this->handle);
+		return $this->position;
+	}
+
+	public function close() {
+		fclose($this->handle);
 	}
 }

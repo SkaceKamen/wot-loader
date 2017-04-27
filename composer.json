@@ -9,7 +9,7 @@
             "email": "jan@zipek.cz"
         }
     ],
-	"autoload": {
+    "autoload": {
         "psr-4": {"Loader\\": "app/"}
     },
     "require": {

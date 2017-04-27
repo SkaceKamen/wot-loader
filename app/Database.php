@@ -63,9 +63,14 @@ class Database
 		}
 	}
 
-	public function row($queryid) {
+	/**
+	 * @param \mysqli_result $query
+	 * @return mixed[]
+	 * @throws \Exception
+	 */
+	public function row($query) {
 		if ($this->connected) {
-			return $queryid->fetch_array();
+			return $query->fetch_array();
 		} else {
 			throw new \Exception("Not connected to DB.");
 		}
@@ -107,7 +112,7 @@ class Database
 
 		$this->prepare($query);
 
-		return $this->prepareCached[$key] = $this->prepare($query);
+		return $this->preparedCache[$key] = $this->prepare($query);
 	}
 
 	private function bindParams($prepared, $params) {
@@ -129,7 +134,6 @@ class Database
 	}
 
 	public function updateCached($table, $where, $data) {
-
 		$where_id = $where[0];
 		$where_query = $where[1];
 		$where_params = $where[2];
@@ -167,7 +171,7 @@ class Database
 		$this->bindParams($query, $values);
 
 		if (!$query->execute()) {
-			throw new \Exception("Failed to execute insert.");
+			throw new \Exception("Failed to execute insert with {$query->error}");
 		}
 
 		$query->close();

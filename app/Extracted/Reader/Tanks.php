@@ -1,7 +1,6 @@
 <?php
 namespace Loader\Extracted\Reader;
 
-use Loader\Storage\Tank;
 use Loader\Storage\Turret;
 use Loader\Storage\Relator;
 
@@ -57,9 +56,14 @@ class Tanks extends Item
 		);
 	}
 
+	/**
+	 * @param string $path
+	 * @param string $nation
+	 * @param int $version
+	 * @return array|\Loader\Storage\Item[]
+	 */
 	public function read($path, $nation, $version) {
 		$tanks = $this->itemsReader->read($path, $nation, $version);
-
 		$items = $tanks;
 
 		//@TODO: This section could be nicer
@@ -81,17 +85,11 @@ class Tanks extends Item
 				$file = $path . $file;
 
 				$str = file_get_contents($file);
-				$str = str_replace("shared", "", $str);
-
-				$f = fopen($file, 'w');
-				fwrite($f, $str);
-				fclose($f);
-
-				$list = simplexml_load_file($file);
+				$list = simplexml_load_string(str_replace("shared", "", $str));
 
 				$item = null;
 				foreach ($tanks as $tank) {
-					if ($tank->get('name_node') == $node) {
+					if (strtolower($tank->get('name_node')) == strtolower($node)) {
 						$item = $tank;
 						break;
 					}
@@ -100,8 +98,11 @@ class Tanks extends Item
 				if ($item === null) {
 					trigger_error("Tank $node is not listed in list.xml!", E_USER_WARNING);
 
+					/*
 					$item = new Tank(array());
 					$items[] = $item;
+					*/
+					continue;
 				}
 
 				$item->update(array(

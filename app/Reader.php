@@ -116,11 +116,15 @@ class Reader implements Log\LoggerAwareInterface
 		$exists = $this->db->row($exists);
 
 		if ($exists) {
+			$this->log("Updating existing version ({$exists['version']}, #{$exists['id']})");
+
 			$this->version = array(
 				'id' => $exists['id'],
 				'version' => $exists['version']
 			);
 		} else {
+			$this->log("Extracting new version $version");
+
 			$this->createVersion($version);
 		}
 	}
@@ -132,7 +136,7 @@ class Reader implements Log\LoggerAwareInterface
 			'version' => $version
 		);
 
-		if (file_exists($this->getItemsPath())) {
+		if (!file_exists($this->getItemsPath())) {
 			$this->path->extractItems($this->getItemsPath());
 			$this->path->extractTranslations($this->getTranslationsPath());
 		}
@@ -151,7 +155,7 @@ class Reader implements Log\LoggerAwareInterface
 	 *
 	 * @param Log\LoggerInterface $logger
 	 *
-	 * @return null
+	 * @return void
 	 */
 	public function setLogger(Log\LoggerInterface $logger) {
 		$this->logger = $logger;

@@ -21,7 +21,9 @@ class Map
 		if ($this->has($key))
 			return $this->values[$key];
 
-		trigger_error("Undefined key '$key'", E_USER_NOTICE);
+		if ($key != '') {
+			trigger_error("Undefined key '$key'", E_USER_NOTICE);
+		}
 
 		return $default;
 	}

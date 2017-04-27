@@ -8,7 +8,8 @@ class Path
 	private $path;
 
 	const PATH_MESSAGES = '/res/text/LC_MESSAGES/';
-	const PATH_VEHICLES = '/res/scripts/item_defs/vehicles/';
+	const PATH_SCRIPTS = '/res/packages/scripts.pkg';
+	const PATH_VEHICLES = 'scripts/item_defs/vehicles/';
 
 	public function __construct($path) {
 		$this->path = $path;
@@ -36,35 +37,38 @@ class Path
 
 		Decompressor::init();
 
-		$this->extractItemsPath($this->getPath() . self::PATH_VEHICLES, $target_path);
+		$this->extractArchivePath($this->getPath() . self::PATH_SCRIPTS, $target_path);
 	}
 
-	private function extractItemsPath($current, $target, $base = null) {
-		if (is_null($base)) {
-			$base = $current;
+	private function extractArchivePath($archive, $target) {
+		// Open archive
+		$zip = new \ZipArchive();
+		if ($zip->open($archive) !== true) {
+			throw new \Exception("Failed to open archive '$archive'.");
 		}
 
-		$handle = opendir($current);
+		// Extract relevant files
+		for ($i = 0; $i < $zip->numFiles; $i++) {
+			$file = $zip->getNameIndex($i);
+			$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
-		while (($file = readdir($handle)) !== false) {
-			if ($file == '.' || $file == '..')
-				continue;
+			if ($ext == 'xml' && strpos($file, self::PATH_VEHICLES) === 0) {
+				$target_filename = $target . '/' . substr($file, strlen(self::PATH_VEHICLES));
+				$target_dir = dirname($target_filename);
 
-			$file = $current . '/' . $file;
-			if (is_dir($file)) {
-				$this->extractItemsPath($file, $target, $base);
-			} else {
-				$path_target = $target . substr($current, strlen($base)) . '/';
-
-				if (!file_exists($path_target)) {
-					mkdir($path_target, 777, true);
+				if (!file_exists($target_dir)) {
+					mkdir($target_dir, 777, true);
 				}
 
-				$ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
-				$name = pathinfo($file, PATHINFO_BASENAME);
-				if ($ext == 'xml') {
-					Decompressor::decodePackedFile($file, $name, $path_target . $name);
-				}
+				// @TODO: This is dirty, jesus
+				// $zip->extractTo($target, array($file));
+				copy("zip://{$archive}#{$file}", $target_filename);
+
+				Decompressor::decodePackedFile(
+					$target_filename,
+					pathinfo($file, PATHINFO_BASENAME),
+					$target_filename
+				);
 			}
 		}
 	}

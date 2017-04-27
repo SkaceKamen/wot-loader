@@ -176,7 +176,7 @@ class Reader
 			if (isset($this->files[$file][$_key]))
 				return $this->files[$file][$_key];
 			else {
-				trigger_error("Undefined translation $file $_key\r\n", E_USER_WARNING);
+				// trigger_error("Undefined translation $file $_key\r\n", E_USER_WARNING);
 				return $key;
 			}
 		} else {

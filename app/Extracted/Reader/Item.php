@@ -4,7 +4,7 @@ namespace Loader\Extracted\Reader;
 use Loader\Extracted\Reader;
 use Loader\Path;
 
-class Item
+abstract class Item
 {
 	/** @var Items $itemsReader */
 	protected $itemsReader = null;
@@ -28,9 +28,7 @@ class Item
 	 * @param int $version
 	 * @throws \Exception
 	 */
-	public function read($path, $nation, $version) {
-		throw new \Exception("This should be implemented.");
-	}
+	abstract public function read($path, $nation, $version);
 
 	public function translate($value) {
 		return $this->reader->getTranslator()->get($value);
@@ -47,6 +45,10 @@ class Item
 		return "$min, $max";
 	}
 
+	/**
+	 * @param \SimpleXMLElement $list
+	 * @return array
+	 */
 	public function getArmor($list) {
 		if (!$list || $list->count() == 0)
 			return array();
@@ -76,7 +78,7 @@ class Item
 			if (isset($armor[$node])) {
 				$armor_primary .= $armor[$node] . ' ';
 			} else {
-				trigger_error("$tank doesn't have primary armor node.", E_USER_WARNING);
+				// trigger_error("$tank doesn't have primary armor node.", E_USER_WARNING);
 				$armor_primary .= "? ";
 			}
 		}
@@ -100,6 +102,10 @@ class Item
 		return implode(', ', $crew);
 	}
 
+	/**
+	 * @param \SimpleXMLElement $list
+	 * @return string
+	 */
 	public function getPrimaryArmorString($list) {
 		return $this->getPrimaryArmor((string)$list->primaryArmor, $this->getArmor($list->armor), $list->getName());
 	}

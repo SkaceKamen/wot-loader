@@ -34,7 +34,7 @@ class Items
 	}
 
 	/**
-	 * @param Path $path
+	 * @param string $path
 	 * @param string $nation
 	 * @param int $version
 	 * @return Storage\Item[]

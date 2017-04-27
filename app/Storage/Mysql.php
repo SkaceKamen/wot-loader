@@ -126,6 +126,16 @@ class Mysql extends Storage
 			WHERE wot_version_id = $version_id
 		");
 		while (($row = $query->fetch_array())) {
+
+			/*
+			if ($row['wot_tanks_id'] == 25107 &&
+				$row['wot_items_engines_id'] == 21483) {
+				echo "Loaded 21483-25107\n";
+				print_r($tanks->get($row['wot_tanks_id']));
+				print_r($engines->get($row['wot_items_engines_id']));
+			}
+			*/
+
 			$item = new Tank\Engine($row, true);
 			$item->update(array(
 				'wot_tanks_id' => $tanks->get($row['wot_tanks_id'])->getRelator(),
