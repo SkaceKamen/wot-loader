@@ -18,6 +18,6 @@ composer install
 
 Then create database using `db/wot.sql` file found in this repository. Database name is up to you.
 
-When you're done, copy`values.php.example` as `values.php` and fill in relevant informations.
+When you're done, copy `values.php.example` as `values.php` and fill in relevant informations.
 
 Now you should be ready to go.
