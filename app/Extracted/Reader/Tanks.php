@@ -11,6 +11,7 @@ class Tanks extends Item
 			'/list.xml',
 			'\Loader\Storage\Tank',
 			array(
+				'id' => 'id',
 				'name' => 'userString',
 				'level' => 'level',
 				'nation' => 'nation',
@@ -72,6 +73,10 @@ class Tanks extends Item
 		$path = $path . '/' . $nation . '/';
 		$dir = opendir($path);
 
+		if (!$dir) {
+			throw new \Exception("Failed to open $path.");
+		}
+		
 		while ($file = readdir($dir)) {
 			if (!is_dir($path . $file) &&
 				$file != '.' && $file != '..' && !in_array($file, $no_tanks)
