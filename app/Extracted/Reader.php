@@ -24,6 +24,11 @@ class Reader
 	public function getNations() {
 		$nations = array();
 		$dir = opendir($this->path);
+		
+		if (!$dir) {
+			throw new \Exception("Failed to open $path.");
+		}
+		
 		while ($nation = readdir($dir)) {
 			if ($nation != '.' && $nation != '..' && $nation != 'common') {
 				$nations[] = $nation;
