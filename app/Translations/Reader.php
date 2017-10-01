@@ -11,6 +11,11 @@ class Reader
 
 	private function readPath($path) {
 		$dir = opendir($path);
+		
+		if (!$dir) {
+			throw new \Exception("Failed to open $path.");
+		}
+		
 		while ($file = readdir($dir)) {
 			if ($file != '.' && $file != '..') {
 				$ex = explode('.', $file);
