@@ -2,3 +2,4 @@ data/versions/*
 data/texts/*
 vendor/*
 .idea/*
+values.php
