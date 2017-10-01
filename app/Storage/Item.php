@@ -42,7 +42,7 @@ class Item
 	}
 
 	/**
-	 * @param Item $item
+	 * @param Item|array $item
 	 */
 	public function update($item) {
 		if (is_object($item) && $item->isSaved()) {
