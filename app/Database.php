@@ -110,8 +110,6 @@ class Database
 		if (isset($this->preparedCache[$key]))
 			return $this->preparedCache[$key];
 
-		$this->prepare($query);
-
 		return $this->preparedCache[$key] = $this->prepare($query);
 	}
 
@@ -145,7 +143,7 @@ class Database
 			$values[] = $value;
 		}
 
-		$query = $this->prepareCached("UPDATE $table SET " . implode(', ', $keys) . " WHERE $where_query");
+		$query = $this->prepare("UPDATE $table SET " . implode(', ', $keys) . " WHERE $where_query");
 		$this->bindParams($query, array_merge($values, $where_params));
 
 		if (!$query->execute())
@@ -167,7 +165,7 @@ class Database
 		}
 
 		$str = "INSERT INTO $table (" . implode(',', array_keys($data)) . ") VALUES (" . implode(', ', $keys) . ")";
-		$query = $this->prepareCached($str);
+		$query = $this->prepare($str);
 		$this->bindParams($query, $values);
 
 		if (!$query->execute()) {
@@ -186,7 +184,7 @@ class Database
 		$where_query = $where[1];
 		$where_params = $where[2];
 
-		$selection = $this->prepareCached("SELECT * FROM $table WHERE $where_query");
+		$selection = $this->prepare("SELECT * FROM $table WHERE $where_query");
 		$this->bindParams($selection, $where_params);
 
 		if (!$selection->execute())
