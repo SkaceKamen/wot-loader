@@ -7,7 +7,7 @@ class Path
 {
 	private $path;
 
-	const PATH_MESSAGES = '/res/text/LC_MESSAGES/';
+	const PATH_MESSAGES = '/res/text/lc_messages/';
 	const PATH_SCRIPTS = '/res/packages/scripts.pkg';
 	const PATH_VEHICLES = 'scripts/item_defs/vehicles/';
 
@@ -32,8 +32,7 @@ class Path
 	}
 
 	public function extractItems($target_path) {
-		if (!file_exists($target_path))
-			mkdir($target_path);
+		if (!file_exists($target_path)) mkdir($target_path, 777, true);
 
 		Decompressor::init();
 
@@ -74,12 +73,15 @@ class Path
 	}
 
 	public function extractTranslations($target_path) {
-		if (!file_exists($target_path))
-			mkdir($target_path);
+		if (!file_exists($target_path)) mkdir($target_path, 777, true);
 
 		$folder = $this->getTranslationsPath();
 		$folder_handle = opendir($folder);
 
+		if (!$folder_handle) {
+			throw new \Exception("Failed to open $folder.");
+		}
+		
 		while (($file = readdir($folder_handle)) !== false) {
 			if ($file == '.' || $file == '..' || is_dir($folder . $file))
 				continue;
