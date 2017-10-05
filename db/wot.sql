@@ -279,6 +279,14 @@ CREATE TABLE IF NOT EXISTS `wot_tanks` (
   KEY `fk_wottanks_version_idx` (`wot_version_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25768 ;
 
+CREATE TABLE IF NOT EXISTS `wot_tanks_parents` (
+  `wot_tanks_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned NOT NULL,
+  `cost` int(11) DEFAULT NULL,
+  KEY `fk_tankparents_tank_idx` (`wot_tanks_id`),
+  KEY `fk_tankparents_tank_idx1` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `wot_versions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `version` varchar(55) DEFAULT NULL,
@@ -334,6 +342,10 @@ ALTER TABLE `wot_items_turrets`
 
 ALTER TABLE `wot_tanks`
   ADD CONSTRAINT `fk_wottanks_version` FOREIGN KEY (`wot_version_id`) REFERENCES `wot_versions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `wot_tanks_parents`
+  ADD CONSTRAINT `fk_tankparents_parent` FOREIGN KEY (`parent_id`) REFERENCES `wot_tanks` (`wot_tanks_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_tankparents_tank` FOREIGN KEY (`wot_tanks_id`) REFERENCES `wot_tanks` (`wot_tanks_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
