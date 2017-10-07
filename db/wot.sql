@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `wot_equipment` (
   `vehicle_tags_exclude` tinytext NOT NULL,
   PRIMARY KEY (`wot_equipment_id`),
   KEY `wot_version_id` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1082 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_equipment_params` (
   `wot_equipment_params_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `wot_equipment_params` (
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`wot_equipment_params_id`),
   KEY `wot_equipment_id` (`wot_equipment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2306 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_chassis` (
   `wot_items_chassis_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_chassis` (
   PRIMARY KEY (`wot_items_chassis_id`),
   KEY `fk_chassis_tanks_idx` (`wot_tanks_id`),
   KEY `fk_wotitemschassis_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36797 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_engines` (
   `wot_items_engines_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_engines` (
   `engine_power` int(11) DEFAULT NULL,
   PRIMARY KEY (`wot_items_engines_id`),
   KEY `fk_wotitemsengines_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=22147 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_engines_tanks` (
   `wot_items_engines_id` int(11) unsigned NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_guns` (
   `turret_yaw_limits` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`wot_items_guns_id`),
   KEY `fk_wotitemsguns_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=26059 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `wot_items_guns_turrets` (
   `wot_items_turrets_id` int(11) unsigned NOT NULL,
@@ -130,8 +130,8 @@ CREATE TABLE IF NOT EXISTS `wot_items_guns_turrets` (
   `gun_pitch_limits` text,
   `gun_armor` varchar(255) DEFAULT NULL,
   `gun_armor_gun` int(11) DEFAULT NULL,
-  `gun_aiming_time` float NOT NULL,
-  `gun_reload_time` float NOT NULL,
+  `gun_aiming_time` float DEFAULT NULL,
+  `gun_reload_time` float DEFAULT NULL,
   `gun_clip_count` int(11) DEFAULT NULL,
   `gun_clip_rate` int(11) DEFAULT NULL,
   `turret_yaw_limits` varchar(32) DEFAULT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_radios` (
   `radio_distance` int(11) DEFAULT NULL,
   PRIMARY KEY (`wot_items_radios_id`),
   KEY `fk_wotitemsradios_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8424 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_radios_tanks` (
   `wot_items_radios_id` int(11) unsigned NOT NULL,
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_shells` (
   `shell_explosion_radius` float DEFAULT NULL,
   PRIMARY KEY (`wot_items_shells_id`),
   KEY `fk_wotitemsshells_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30850 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_shells_guns` (
   `wot_items_shells_id` int(11) unsigned NOT NULL DEFAULT '0',
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_tanks` (
   `repair` float DEFAULT NULL,
   PRIMARY KEY (`wot_items_tanks_id`),
   KEY `fk_wotitemstanks_version_idx` (`wot_version_Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3021 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_items_turrets` (
   `wot_items_turrets_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -242,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `wot_items_turrets` (
   PRIMARY KEY (`wot_items_turrets_id`),
   KEY `fk_turrets_tanks_idx` (`wot_tanks_id`),
   KEY `fk_wotitemsturrets_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31177 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_tanks` (
   `wot_tanks_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `wot_tanks` (
   `crew` varchar(255) NOT NULL,
   PRIMARY KEY (`wot_tanks_id`),
   KEY `fk_wottanks_version_idx` (`wot_version_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25768 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 CREATE TABLE IF NOT EXISTS `wot_tanks_parents` (
   `wot_tanks_id` int(10) unsigned NOT NULL,
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `wot_versions` (
   `version` varchar(55) DEFAULT NULL,
   `published` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=91 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
 
 
 ALTER TABLE `wot_equipment`
