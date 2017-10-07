@@ -1,9 +1,9 @@
 <?php
 return array(
 	'paths' => array(
-		'game' => 'd:/Hry/World_of_Tanks_closed_Beta/',
-		'versions' => 'data/versions/',
-		'texts' => 'data/texts/'
+		'game' => 'd:/Games/World_of_Tank/',		// Change this to path to your world of tanks installation (note: replace \ with / on windows)
+		'versions' => 'data/versions/',					// This is where unpacked data is stored internally, change only if you know what you're doing
+		'texts' => 'data/texts/'								// This is where translations are stored internally, change only if you know what you're doing
 	),
 	'mysql' => array(
 		'hostname' => '127.0.0.1',
