@@ -47,7 +47,7 @@ class Equipment extends Item
 				'icon' => $icon,
 				'price' => $price,
 				'price_gold' => $price_gold,
-				'removable' => ((string)$item->removable) == 'true',
+				'removable' => (((string)$item->removable) === 'true') ? 1 : 0,
 				'weight' => $weight,
 				'vehicle_tags_include' => $include,
 				'vehicle_tags_exclude' => $exclude
